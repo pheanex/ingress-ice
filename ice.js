@@ -1,7 +1,7 @@
 /**
  * @file Ingress-ICE, the main script
  * @author Nikitakun (https://github.com/nibogd)
- * @version 3.1.0
+ * @version 3.1.0-testing
  * @license MIT
  * @see {@link https://github.com/nibogd/ingress-ice|GitHub }
  * @see {@link https://ingress.divshot.io/|Website }
@@ -77,7 +77,7 @@ if (isNaN(args[1])) {
  * Counter for number of screenshots
  */
 var curnum       = 0;
-var version      = '3.1.0';
+var version      = '3.1.0-testing';
 
 /**
  * Delay between logging in and checking if successful
@@ -371,12 +371,19 @@ function checkLogin() {
  * @since 3.1.0
  */
 function afterPlainLogin() {
-
             window.setTimeout(function () {
                 announce('Verifying login...');
+                page.render('debug2.png');
                 checkLogin();
                 window.setTimeout(function () {
+                    var cookies = page.cookies;
+
+                    console.log('Listing cookies:');
+                    for(var i in cookies) {
+                        console.log(cookies[i].name + '=' + cookies[i].value);
+                    }
                     page.open(area, function () {
+                        page.render('debug3.png');
                         if (iitc) {
                             addIitc();
                         }
@@ -389,6 +396,7 @@ function afterPlainLogin() {
                                     document.querySelector("#filters_container").style.display= 'none';
                                 });
                             }
+                            page.render('debug4.png');
                             hideDebris(iitc);
                             prepare(iitc, width, height);
                             announce('The first screenshot may not contain all portals, it is intended for you to check framing.');
@@ -652,6 +660,7 @@ if (configver !== 2) {
     
             announce('Logging in...');
             page.open(link, function () {
+                page.render('debug1.png');
                 login(l, p);
                 afterPlainLogin();
             });
